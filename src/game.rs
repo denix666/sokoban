@@ -1,7 +1,64 @@
 use macroquad::prelude::*;
+use crate::{res::Resources, package::Package, points::Point};
+
+pub fn draw_score(res: &Resources, game: &Game) {
+    let mut moves_text = String::from("Moves: ");
+    moves_text.push_str(&game.moves.to_string());
+    draw_text_ex(&moves_text, 15.0, 470.0, 
+        TextParams {
+            font: res.font,
+            font_size: 27,
+            color: WHITE,
+            ..Default::default()
+        },
+    );
+
+    let mut level_text = String::from("Level: ");
+    level_text.push_str(&game.lvl_num.to_string());
+    draw_text_ex(&level_text, 15.0, 510.0, 
+        TextParams {
+            font: res.font,
+            font_size: 27,
+            color: WHITE,
+            ..Default::default()
+        },
+    );
+
+    draw_text_ex("R - Restart level", 200.0, 470.0, 
+        TextParams {
+            font: res.font,
+            font_size: 27,
+            color: WHITE,
+            ..Default::default()
+        },
+    );
+
+    draw_text_ex("N - Jump to next level", 200.0, 510.0, 
+        TextParams {
+            font: res.font,
+            font_size: 27,
+            color: WHITE,
+            ..Default::default()
+        },
+    );
+}
+
+pub fn all_packages_in_place(packages: &Vec<Package>, points: &Vec<Point>) -> bool {
+    let mut result: bool = true;
+
+    for package in packages {
+        let check_px: i32 = (package.x / 50.0) as i32;
+        let check_py: i32 = (package.y / 50.0) as i32;
+        if crate::map::get_val(check_px, check_py, &points) != "." && crate::map::get_val(check_px, check_py, &points) != "*" {
+            result = false;
+            break;
+        }
+    }
+
+    return result;
+}
 
 pub struct Game {
-    pub score: i32,
     pub moves: i32,
     pub lvl_num: i32,
 }
@@ -9,7 +66,6 @@ pub struct Game {
 impl Game {
     pub async fn new()  -> Self {
         Self {
-            score: 0,
             moves: 0,
             lvl_num: 0,
         }

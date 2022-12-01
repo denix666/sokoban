@@ -7,6 +7,7 @@ pub struct Resources {
     pub point_texture: Texture2D,
     pub bg_texture: Texture2D,
     pub intro_texture: Texture2D,
+    pub font: Font,
 }
 
 impl Resources {
@@ -18,6 +19,7 @@ impl Resources {
             point_texture: load_texture("assets/images/point.png").await.unwrap(),
             bg_texture: load_texture("assets/images/bg.png").await.unwrap(),
             intro_texture: load_texture("assets/images/intro.png").await.unwrap(),
+            font: load_ttf_font("assets/fonts/game_font.ttf").await.unwrap(),
         }
     }
 }

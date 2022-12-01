@@ -16,7 +16,7 @@ mod map;
 use map::*;
 
 mod game;
-use game::Game;
+use game::{Game, draw_score};
 
 pub enum GameState {
     Game,
@@ -34,8 +34,8 @@ fn window_conf() -> Conf {
         .to_owned(),
         fullscreen: false,
         sample_count: 16,
-        window_width: 600,
-        window_height: 500,
+        window_width: 610,
+        window_height: 550,
         ..Default::default()
     }
 }
@@ -59,7 +59,7 @@ async fn main() {
                 draw_texture(resources.intro_texture, 0.0,0.0, WHITE);
                 
                 if is_key_pressed(KeyCode::Space) {
-                    game.score = 0;
+                    game.moves = 0;
                     game.lvl_num = 1;
                     game_state = GameState::InitLevel;
                 }
@@ -200,6 +200,17 @@ async fn main() {
                 }
 
                 if is_key_pressed(KeyCode::R) {
+                    game.moves = 0;
+                    game_state = GameState::InitLevel;
+                }
+
+                if is_key_pressed(KeyCode::N) {
+                    if game.lvl_num == 20 {
+                        game.lvl_num = 1;
+                    } else {
+                        game.lvl_num += 1;
+                    }
+                    game.moves = 0;
                     game_state = GameState::InitLevel;
                 }
 
@@ -207,7 +218,19 @@ async fn main() {
                     package.draw(&resources);
                 }
 
+                if game::all_packages_in_place(&packages, &points) {
+                    if game.lvl_num == 20 {
+                        game.lvl_num = 1;
+                    } else {
+                        game.lvl_num += 1;
+                    }
+                    game.moves = 0;
+                    game_state = GameState::InitLevel;
+                }
+
                 player.draw(&resources);
+
+                draw_score(&resources, &game);
             },
             GameState::InitLevel => {
                 packages.clear();
@@ -250,7 +273,6 @@ async fn main() {
             GameState::GameCompleted => {}, 
         }
 
-        
         next_frame().await
     }
 }
