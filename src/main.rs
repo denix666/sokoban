@@ -16,7 +16,7 @@ mod map;
 use map::*;
 
 mod game;
-use game::{Game, draw_score};
+use game::{Game, draw_score, show_message};
 
 pub enum GameState {
     Game,
@@ -218,13 +218,7 @@ async fn main() {
                 }
 
                 if game::all_packages_in_place(&packages, &points) {
-                    if game.lvl_num == 20 {
-                        game.lvl_num = 1;
-                    } else {
-                        game.lvl_num += 1;
-                    }
-                    game.moves = 0;
-                    game_state = GameState::InitLevel;
+                    game_state = GameState::LevelCompleted;
                 }
 
                 player.draw(&resources);
@@ -268,8 +262,42 @@ async fn main() {
 
                 game_state = GameState::Game;
             },
-            GameState::LevelCompleted => {},
-            GameState::GameCompleted => {}, 
+            GameState::LevelCompleted => {
+                // draw all elements
+                draw_map(&points, &resources);
+                for package in &mut packages {
+                    package.draw(&resources);
+                }
+                player.draw(&resources);
+                draw_score(&resources, &game);
+
+                show_message(&resources, "level completed, press 'space' to continue...");
+                if is_key_pressed(KeyCode::Space) {
+                    if game.lvl_num == 20 {
+                        game_state = GameState::GameCompleted;
+                    } else {
+                        game.lvl_num += 1;
+                        game.moves = 0;
+                        game_state = GameState::InitLevel;
+                    }
+                }
+            },
+            GameState::GameCompleted => {
+                // draw all elements
+                draw_map(&points, &resources);
+                for package in &mut packages {
+                    package.draw(&resources);
+                }
+                player.draw(&resources);
+                draw_score(&resources, &game);
+                
+                show_message(&resources, "game completed, press 'space' to restart...");
+                if is_key_pressed(KeyCode::Space) {
+                    game.lvl_num = 1;
+                    game.moves = 0;
+                    game_state = GameState::InitLevel;
+                }
+            }, 
         }
 
         next_frame().await

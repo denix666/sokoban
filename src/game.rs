@@ -1,6 +1,17 @@
 use macroquad::prelude::*;
 use crate::{res::Resources, package::Package, points::Point};
 
+pub fn show_message(res: &Resources, msg: &str) {
+    draw_text_ex(msg, 15.0, 320.0, 
+        TextParams {
+            font: res.font,
+            font_size: 27,
+            color: GOLD,
+            ..Default::default()
+        },
+    );
+}
+
 pub fn draw_score(res: &Resources, game: &Game) {
     let mut moves_text = String::from("Moves: ");
     moves_text.push_str(&game.moves.to_string());

@@ -2,6 +2,10 @@
 
 _Sokoban written in Rust_
 
+## Screenshots
+![intro](screenshots/screenshot1.png)
+
+
 **Please note, that game is in development at the moment, so it is still not comlpleted!**
 
 Commands to build/run:
