@@ -204,7 +204,7 @@ async fn main() {
                 }
 
                 if is_key_pressed(KeyCode::N) {
-                    if game.lvl_num == 20 {
+                    if game.lvl_num == 44 {
                         game.lvl_num = 1;
                     } else {
                         game.lvl_num += 1;
@@ -273,7 +273,7 @@ async fn main() {
 
                 show_message(&resources, "level completed, press 'space' to continue...");
                 if is_key_pressed(KeyCode::Space) {
-                    if game.lvl_num == 20 {
+                    if game.lvl_num == 44 {
                         game_state = GameState::GameCompleted;
                     } else {
                         game.lvl_num += 1;
