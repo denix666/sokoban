@@ -9,10 +9,8 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  build:
-
+  linux_build:
     runs-on: ubuntu-latest
-
     steps:
     - name: Prep
       run: sudo apt-get install libasound-dev -y
@@ -31,3 +29,28 @@ jobs:
       uses: softprops/action-gh-release@v1
       with:
         files: sokoban.tar.gz
+
+  win_build:
+    runs-on: windows-latest
+    steps:
+    - name: Install rust
+      uses: actions-rs/toolchain@v1
+      with:
+        profile: minimal
+        toolchain: stable
+        target: x86_64-pc-windows-msvc
+        override: true
+
+    - uses: actions/checkout@v3
+    - name: Build
+      run: cargo build --release
+
+    - shell: bash
+      run: |
+        mv target/release/sokoban.exe sokoban.exe
+        7z a sokoban.zip sokoban.exe assets
+        
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: sokoban.zip
