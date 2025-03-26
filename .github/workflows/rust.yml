@@ -23,7 +23,7 @@ jobs:
       run: |
         mv target/release/sokoban sokoban
         chmod 777 sokoban
-        tar cpfz sokoban.tar.gz sokoban assets
+        tar cpfz sokoban.tar.gz sokoban
         
     - name: Release
       uses: softprops/action-gh-release@v1
@@ -48,7 +48,7 @@ jobs:
     - shell: bash
       run: |
         mv target/release/sokoban.exe sokoban.exe
-        7z a sokoban.zip sokoban.exe assets
+        7z a sokoban.zip sokoban.exe
         
     - name: Release
       uses: softprops/action-gh-release@v1
