@@ -13,13 +13,13 @@ pub struct Resources {
 impl Resources {
     pub async fn new() -> Self {
         Self {
-            wall_texture: load_texture("assets/images/wall.png").await.unwrap(),
-            box_texture: load_texture("assets/images/box.png").await.unwrap(),
-            player_texture: load_texture("assets/images/player.png").await.unwrap(),
-            point_texture: load_texture("assets/images/point.png").await.unwrap(),
-            intro_texture: load_texture("assets/images/intro.png").await.unwrap(),
-            floor_texture: load_texture("assets/images/floor.png").await.unwrap(),
-            font: load_ttf_font("assets/fonts/game_font.ttf").await.unwrap(),
+            wall_texture: Texture2D::from_file_with_format(include_bytes!("../assets/images/wall.png"), None),
+            box_texture: Texture2D::from_file_with_format(include_bytes!("../assets/images/box.png"), None),
+            player_texture: Texture2D::from_file_with_format(include_bytes!("../assets/images/player.png"), None),
+            point_texture: Texture2D::from_file_with_format(include_bytes!("../assets/images/point.png"), None),
+            intro_texture: Texture2D::from_file_with_format(include_bytes!("../assets/images/intro.png"), None),
+            floor_texture: Texture2D::from_file_with_format(include_bytes!("../assets/images/floor.png"), None),
+            font: load_ttf_font_from_bytes(include_bytes!("../assets/fonts/game_font.ttf")).unwrap(),
         }
     }
 }
